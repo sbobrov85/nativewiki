@@ -20,3 +20,5 @@
 
 $s_plugin_NativeWiki_name = 'Native Wiki';
 $s_plugin_NativeWiki_description = 'Родная Wiki для MantisBT.';
+$s_plugin_NativeWiki_config_common = 'Основные параметры';
+$s_plugin_NativeWiki_config_engine = 'Движок Wiki';

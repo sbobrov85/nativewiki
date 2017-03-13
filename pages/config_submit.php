@@ -18,7 +18,16 @@
  * @copyright Copyright 2017  JeraIT Team - support@jerait.com
  */
 
-$s_plugin_NativeWiki_name = 'Native Wiki';
-$s_plugin_NativeWiki_description = 'Native Wiki for MantisBT.';
-$s_plugin_NativeWiki_config_common = 'Common options';
-$s_plugin_NativeWiki_config_engine = 'Wiki engine';
+form_security_validate('plugin_nativewiki_config_submit');
+
+auth_reauthenticate( );
+access_ensure_global_level(config_get('manage_plugin_threshold'));
+
+plugin_require_api('lib/config.php');
+
+$f_process_wiki_engine = gpc_get_string('wiki_engine', 'markdown');
+plugin_config_set('wiki_engine', $f_process_wiki_engine);
+
+form_security_purge('plugin_nativewiki_config_submit');
+
+print_successful_redirect(plugin_page('config', true ));
