@@ -21,6 +21,9 @@
 /**
  * Native Wiki plugin
  */
+
+plugin_require_api('helper.php', 'NativeWiki');
+
 class NativeWikiPlugin extends MantisPlugin  {
 	/**
 	* {@inheriteDoc}
@@ -40,5 +43,32 @@ class NativeWikiPlugin extends MantisPlugin  {
 		$this->author = 'JeraIT Team';
 		$this->contact = 'support@jerait.com';
 		$this->url = 'http://jerait.com';
+	}
+
+	/**
+	 * {@inheriteDoc}
+	 * @see MantisPlugin::register()
+	 */
+	public function hooks()
+	{
+		return array(
+			'EVENT_MENU_MAIN' => 'main_menu'
+		);
+	}
+
+	/**
+	 * Creating wiki menu item on sidebar.
+	 * @return array
+	 */
+	public function main_menu()
+	{
+		return array(
+			array(
+				'title' => lang_get('plugin_NativeWiki_wiki'),
+				'access_level' => ANYBODY,
+				'url' => NativeWiki::getWikiUrl(),
+				'icon' => 'fa-book'
+			)
+		);
 	}
 }

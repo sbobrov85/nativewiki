@@ -22,3 +22,7 @@ $s_plugin_NativeWiki_name = 'Native Wiki';
 $s_plugin_NativeWiki_description = 'Native Wiki for MantisBT.';
 $s_plugin_NativeWiki_config_common = 'Common options';
 $s_plugin_NativeWiki_config_engine = 'Wiki engine';
+$s_plugin_NativeWiki_wiki = 'Wiki';
+$s_plugin_NativeWiki_edit = 'Edit';
+$s_plugin_NativeWiki_history = 'History';
+$s_plugin_NativeWiki_wiki_for = 'Wiki for';

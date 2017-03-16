@@ -18,11 +18,23 @@
  * @copyright Copyright 2017  JeraIT Team - support@jerait.com
  */
 
-$s_plugin_NativeWiki_name = 'Native Wiki';
-$s_plugin_NativeWiki_description = 'Родная Wiki для MantisBT.';
-$s_plugin_NativeWiki_config_common = 'Основные параметры';
-$s_plugin_NativeWiki_config_engine = 'Движок Wiki';
-$s_plugin_NativeWiki_wiki = 'Вики';
-$s_plugin_NativeWiki_edit = 'Редактировать';
-$s_plugin_NativeWiki_history = 'История';
-$s_plugin_NativeWiki_wiki_for = 'Вики для';
+/**
+ * @class NativeWiki
+ */
+class NativeWiki {
+	 /**
+	  * Get full wiki url with project and other params.
+	  * @return string full wiki url.
+	  */
+	 public static function getWikiUrl()
+	 {
+		 $url = plugin_page('content.php');
+		 $project = helper_get_current_project();
+
+		 if (!empty($project) && !is_int($project)) {
+		 	$url .= '&amp;=' . $project;
+		 }
+
+		 return $url;
+	 }
+}
