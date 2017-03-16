@@ -40,8 +40,8 @@ layout_page_begin(NativeWiki::getWikiUrl());
 					<?= lang_get('plugin_NativeWiki_wiki_for') ?>
 					<?php
 						$currentProject = helper_get_current_project();
-						if (!empty($currentProject) && !is_int($currentProject)) {
-							echo $currentProject;
+						if ($currentProject != ALL_PROJECTS) {
+							echo string_display(project_get_name($currentProject));
 						} else {
 							echo lang_get('all_projects');
 						}

@@ -18,19 +18,12 @@
  * @copyright Copyright 2017  JeraIT Team - support@jerait.com
  */
 
-/**
- * @class NativeWiki
- */
-class NativeWiki {
-	 /**
-	  * Get full wiki url with project and other params.
-	  * @return string full wiki url.
-	  */
-	 public static function getWikiUrl()
-	 {
-		 $url = plugin_page('content.php');
-		 $project = helper_get_current_project();
+plugin_require_api('helper.php', 'NativeWiki');
 
-		 return $url;
-	 }
-}
+layout_page_header();
+
+layout_page_begin(NativeWiki::getWikiUrl());
+?>
+
+<?php
+layout_page_end();
