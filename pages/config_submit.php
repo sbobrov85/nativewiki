@@ -20,14 +20,22 @@
 
 form_security_validate('plugin_nativewiki_config_submit');
 
+// check admin rights.
 auth_reauthenticate( );
 access_ensure_global_level(config_get('manage_plugin_threshold'));
 
-plugin_require_api('lib/config.php');
-
+// save common options.
 $f_process_wiki_engine = gpc_get_string('wiki_engine', 'markdown');
 plugin_config_set('wiki_engine', $f_process_wiki_engine);
 
-form_security_purge('plugin_nativewiki_config_submit');
+// save wiki access.
+$g_access = current_user_get_access_level();
+$g_project = helper_get_current_project();
 
+foreach (NativeWiki::getThresholdList() as $threshold) {
+	NativeWiki::setThresholdAccess($g_access, $g_project, $threshold);
+}
+
+// purge & exit
+form_security_purge('plugin_nativewiki_config_submit');
 print_successful_redirect(plugin_page('config', true ));

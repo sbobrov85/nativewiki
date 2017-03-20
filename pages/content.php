@@ -20,9 +20,16 @@
 
 plugin_require_api('helper.php', 'NativeWiki');
 
+access_ensure_project_level(plugin_config_get('view_wiki'));
+
 layout_page_header();
 
 layout_page_begin(NativeWiki::getWikiUrl());
+
+// controll access.
+
+$canEdit = access_has_project_level(plugin_config_get('edit_wiki_pages'));
+$canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_history'));
 
 ?>
 
@@ -50,6 +57,7 @@ layout_page_begin(NativeWiki::getWikiUrl());
 			</div>
 			<!-- /widget-header -->
 
+			<?php if ($canEdit || $canViewHistory): ?>
 			<!-- widger-toolbox -->
 			<div class="widget-toolbox padding-8 clearfix">
 				<!-- btn-toolbar -->
@@ -57,14 +65,18 @@ layout_page_begin(NativeWiki::getWikiUrl());
 					<!-- btn-group -->
 					<div class="btn-group pull-left">
 					<?php
-						print_small_button(
-							plugin_page('edit.php'),
-							lang_get('plugin_NativeWiki_edit')
-						);
-						print_small_button(
-							plugin_page('history.php'),
-							lang_get('plugin_NativeWiki_history')
-						);
+						if ($canEdit) {
+							print_small_button(
+								plugin_page('edit.php'),
+								lang_get('plugin_NativeWiki_edit')
+							);
+						}
+						if ($canViewHistory) {
+							print_small_button(
+								plugin_page('history.php'),
+								lang_get('plugin_NativeWiki_history')
+							);
+						}
 					?>
 					</div>
 					<!-- /btn-group -->
@@ -72,6 +84,8 @@ layout_page_begin(NativeWiki::getWikiUrl());
 				<!-- /btn-toolbar -->
 			</div>
 			<!-- /widger-toolbox -->
+			<?php endif ?>
+
 		</div>
 		<!-- /widget-box -->
 	</div>

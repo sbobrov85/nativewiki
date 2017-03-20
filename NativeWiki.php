@@ -62,13 +62,32 @@ class NativeWikiPlugin extends MantisPlugin  {
 	 */
 	public function main_menu()
 	{
-		return array(
-			array(
+		$mainMenuItems = array();
+
+		if (access_has_project_level(plugin_config_get('view_wiki'))) {
+			$mainMenuItems[] = array(
 				'title' => lang_get('plugin_NativeWiki_wiki'),
 				'access_level' => ANYBODY,
 				'url' => NativeWiki::getWikiUrl(),
 				'icon' => 'fa-book'
-			)
-		);
+			);
+		}
+
+		return $mainMenuItems;
+	}
+
+	/**
+	 * {@inheriteDoc}
+	 * @see MantisPlugin::config()
+	 */
+	public function config()
+	{
+		$access = array();
+
+		foreach (NativeWiki::getThresholdList() as $threshold) {
+			$access[$threshold] = ADMINISTRATOR;
+		}
+
+		return $access;
 	}
 }

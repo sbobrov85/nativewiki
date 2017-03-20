@@ -40,7 +40,7 @@ $wiki_engines = array(
 	<!-- form-container -->
 	<div id="common-options-div" class="form-container">
 		<form
-			id="account-profile-form"
+			id="common-config-form"
 			method="post"
 			action="<?= plugin_page('config_submit') ?>"
 		>
@@ -87,25 +87,30 @@ $wiki_engines = array(
 							<!-- /table-responsive -->
 						</div>
 						<!-- /widget-main -->
-
-						<!-- widget-toolbox -->
-						<div class="widget-toolbox padding-8 clearfix">
-							<input
-								type="submit"
-								class="btn btn-primary btn-white btn-round"
-								value="<?= lang_get('change_configuration') ?>"
-							/>
-						</div>
-						<!-- /widget-toolbox -->
-
 					</div>
 					<!-- /widget-body -->
 				</div>
 				<!-- /widget-box -->
 			</fieldset>
+
+			<?php include __DIR__
+				. DIRECTORY_SEPARATOR . 'include'
+				. DIRECTORY_SEPARATOR . 'config__access.php'
+			?>
+
+			<!-- submit -->
+			<div class="space-10"></div>
+			<input
+				type="submit"
+				class="btn btn-primary btn-white btn-round"
+				value="<?= lang_get('change_configuration') ?>"
+			/>
+			<!-- /submit -->
+
 		</form>
 	</div>
 	<!-- /form-container -->
+
 </div>
 <!-- /main wrap -->
 

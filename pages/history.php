@@ -20,6 +20,8 @@
 
 plugin_require_api('helper.php', 'NativeWiki');
 
+access_ensure_project_level(plugin_config_get('view_wiki_pages_history'));
+
 layout_page_header();
 
 layout_page_begin(NativeWiki::getWikiUrl());
