@@ -19,15 +19,15 @@
  */
 
 // get access levels.
-$t_file_exp = NativeWiki::getAccessExpression(
+$t_file_exp = NativeWikiCommonHelper::getAccessExpression(
 	plugin_config_get($threshold, null, true),
 	$g_access_levels
 );
-$t_global_exp = NativeWiki::getAccessExpression(
+$t_global_exp = NativeWikiCommonHelper::getAccessExpression(
 	plugin_config_get($threshold, null, true, ALL_USERS, ALL_PROJECTS),
 	$g_access_levels
 );
-$t_project_exp = NativeWiki::getAccessExpression(
+$t_project_exp = NativeWikiCommonHelper::getAccessExpression(
 	plugin_config_get($threshold),
 	$g_access_levels
 );
@@ -51,7 +51,7 @@ $t_can_change = access_has_project_level(
 		$t_global = in_array($t_access_level, $t_global_exp);
 		$t_project = in_array($t_access_level, $t_project_exp);
 
-		$t_color = NativeWiki::setColor(
+		$t_color = NativeWikiCommonHelper::setColor(
 			$g_project_id,
 			$threshold,
 			$t_file,

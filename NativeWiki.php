@@ -22,7 +22,7 @@
  * Native Wiki plugin
  */
 
-plugin_require_api('helper.php', 'NativeWiki');
+plugin_require_api('helper/NativeWikiCommon.php', 'NativeWiki');
 
 class NativeWikiPlugin extends MantisPlugin  {
 	/**
@@ -68,7 +68,7 @@ class NativeWikiPlugin extends MantisPlugin  {
 			$mainMenuItems[] = array(
 				'title' => lang_get('plugin_NativeWiki_wiki'),
 				'access_level' => ANYBODY,
-				'url' => NativeWiki::getWikiUrl(),
+				'url' => NativeWikiCommonHelper::getWikiUrl(),
 				'icon' => 'fa-book'
 			);
 		}

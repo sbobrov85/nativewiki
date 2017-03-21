@@ -18,13 +18,13 @@
  * @copyright Copyright 2017  JeraIT Team - support@jerait.com
  */
 
-plugin_require_api('helper.php', 'NativeWiki');
+plugin_require_api('helper/NativeWikiCommon.php', 'NativeWiki');
 
 access_ensure_project_level(plugin_config_get('edit_wiki_pages'));
 
 layout_page_header();
 
-layout_page_begin(NativeWiki::getWikiUrl());
+layout_page_begin(NativeWikiCommonHelper::getWikiUrl());
 ?>
 
 <?php

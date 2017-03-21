@@ -32,8 +32,8 @@ plugin_config_set('wiki_engine', $f_process_wiki_engine);
 $g_access = current_user_get_access_level();
 $g_project = helper_get_current_project();
 
-foreach (NativeWiki::getThresholdList() as $threshold) {
-	NativeWiki::setThresholdAccess($g_access, $g_project, $threshold);
+foreach (NativeWikiCommonHelper::getThresholdList() as $threshold) {
+	NativeWikiCommonHelper::setThresholdAccess($g_access, $g_project, $threshold);
 }
 
 // purge & exit

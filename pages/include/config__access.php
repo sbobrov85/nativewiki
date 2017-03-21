@@ -22,7 +22,7 @@
 $g_access_levels = MantisEnum::getAssocArrayIndexedByValues(
 	config_get('access_levels_enum_string')
 );
-$thresholdsList = NativeWiki::getThresholdList();
+$thresholdsList = NativeWikiCommonHelper::getThresholdList();
 $g_user = auth_get_current_user_id();
 $g_project_id = helper_get_current_project();
 $t_show_submit = false;
