@@ -82,12 +82,6 @@ class NativeWikiPlugin extends MantisPlugin  {
 	 */
 	public function config()
 	{
-		$access = array();
-
-		foreach (NativeWiki::getThresholdList() as $threshold) {
-			$access[$threshold] = ADMINISTRATOR;
-		}
-
-		return $access;
+		return NativeWikiCommonHelper::getThresholds();
 	}
 }

@@ -21,7 +21,15 @@
 /**
  * @class NativeWiki
  */
-class NativeWiki {
+class NativeWikiCommonHelper {
+
+	protected static $thresholds = array(
+		'view_wiki' => array(VIEWER, REPORTER, UPDATER, DEVELOPER, MANAGER, ADMINISTRATOR),
+		'edit_wiki_pages' => array(REPORTER, UPDATER, DEVELOPER, MANAGER, ADMINISTRATOR),
+		'delete_wiki_pages' => array(MANAGER, ADMINISTRATOR),
+		'view_wiki_pages_history' => array(DEVELOPER, MANAGER, ADMINISTRATOR),
+	);
+
 	 /**
 	  * Get full wiki url with project and other params.
 	  * @return string full wiki url.
@@ -80,12 +88,16 @@ class NativeWiki {
 	 */
 	public static function getThresholdList()
 	{
-		return array(
-			'view_wiki',
-			'edit_wiki_pages',
-			'delete_wiki_pages',
-			'view_wiki_pages_history',
-		);
+		return array_keys(self::$thresholds);
+	}
+
+	/**
+	 * Return thresholds list by role access.
+	 * @return array threshold => array(roles list)
+	 */
+	public static function getThresholds()
+	{
+		return self::$thresholds;
 	}
 
 	/**
