@@ -64,19 +64,14 @@ class NativeWikiCommonHelper {
 		$t_color = '';
 
 		# all projects override
-		if( $p_global != $p_file ) {
+		if ($p_global != $p_file ||
+			($p_project != $p_global && $g_project_id == ALL_PROJECTS)) {
 			$t_color = 'color-global';
-			// if( $p_set_override && ALL_PROJECTS == $g_project_id ) {
-			// 	set_overrides( $threshold );
-			// }
 		}
 
 		# project overrides
-		if( $p_project != $p_global ) {
+		if ($p_project != $p_global && $g_project_id != ALL_PROJECTS) {
 			$t_color = 'color-project';
-			// if( $p_set_override && ALL_PROJECTS != $g_project_id ) {
-			// 	set_overrides( $threshold );
-			// }
 		}
 
 		return $t_color;

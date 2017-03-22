@@ -24,18 +24,26 @@ form_security_validate('plugin_nativewiki_config_submit');
 auth_reauthenticate( );
 access_ensure_global_level(config_get('manage_plugin_threshold'));
 
-// save common options.
-$f_process_wiki_engine = gpc_get_string('wiki_engine', 'markdown');
-plugin_config_set('wiki_engine', $f_process_wiki_engine);
-
-// save wiki access.
+// get common values.
 $g_access = current_user_get_access_level();
 $g_project = helper_get_current_project();
 
+// save common options.
+$f_process_wiki_engine = gpc_get_string('wiki_engine', 'markdown');
+plugin_config_set(
+    'wiki_engine',
+    $f_process_wiki_engine,
+    NO_USER,
+    $g_project,
+    $g_access
+);
+
+// save wiki access.
 foreach (NativeWikiCommonHelper::getThresholdList() as $threshold) {
-	NativeWikiCommonHelper::setThresholdAccess($g_access, $g_project, $threshold);
+    NativeWikiCommonHelper::setThresholdAccess($g_access, $g_project, $threshold);
 }
 
 // purge & exit
 form_security_purge('plugin_nativewiki_config_submit');
+
 print_successful_redirect(plugin_page('config', true ));

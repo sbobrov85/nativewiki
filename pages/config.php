@@ -32,11 +32,72 @@ $wiki_engines = array(
 	'creole' => 'Creole'
 );
 
+$g_project_id = helper_get_current_project();
+
+// prepare project title.
+if( ALL_PROJECTS == $g_project_id ) {
+	$t_project_title = lang_get('config_all_projects');
+} else {
+	$t_project_title = sprintf(
+		lang_get('config_project'),
+		string_display(project_get_name($g_project_id))
+	);
+}
+
+$g_access_levels = MantisEnum::getAssocArrayIndexedByValues(
+	config_get('access_levels_enum_string')
+);
+
+$wiki_engine_global = plugin_config_get('wiki_engine', null, true);
+$wiki_engine_global_project = plugin_config_get(
+	'wiki_engine',
+	null,
+	true,
+	ALL_USERS,
+	$g_project_id
+);
+$wiki_engine_project = plugin_config_get('wiki_engine');
+
+$wiki_engine = reset(array_reverse(array_filter(array(
+	$wiki_engine_global,
+	$wiki_engine_global_project,
+	$wiki_engine_project
+))));
+
+$color = NativeWikiCommonHelper::setColor(
+	$g_project_id,
+	'wiki_engine',
+	$wiki_engine_global,
+	$wiki_engine_global_project,
+	$wiki_engine_project,
+	false
+);
+
 ?>
 
 <!-- main wrap -->
 <div class="col-md-12 col-xs-12">
 	<div class="space-10"></div>
+	<!-- well -->
+	<div class="well">
+		<p class="bold">
+			<i class="fa fa-info-circle"></i>
+			<?= $t_project_title ?>
+		</p>
+		<p>
+			<?= lang_get('colour_coding') ?>
+			<?php if (ALL_PROJECTS <> $g_project_id): ?>
+				<span class="color-project">
+					<?= lang_get( 'colour_project' ) ?>
+				</span><br />
+			<?php endif ?>
+			<span class="color-global">
+				<?= lang_get( 'colour_global' ) ?>
+			</span>
+		</p>
+	</div>
+	<!-- /well -->
+
 	<!-- form-container -->
 	<div id="common-options-div" class="form-container">
 		<form
@@ -71,9 +132,12 @@ $wiki_engines = array(
 										</td>
 										<td>
 											<label>
-												<select name="wiki_engine">
+												<select
+													name="wiki_engine"
+													class="<?= $color ?>">
 													<?php foreach ($wiki_engines as $wiki_engine_value => $wiki_engine_label): ?>
-													<option value="<?= $wiki_engine_value ?>"<?= $wiki_engine_value == plugin_config_get('wiki_engine') ? ' selected="selected"' : '' ?>>
+													<option
+														value="<?= $wiki_engine_value ?>"<?= $wiki_engine_value == $wiki_engine ? ' selected="selected"' : '' ?>>
 														<?= $wiki_engine_label ?>
 													</option>
 													<?php endforeach ?>
