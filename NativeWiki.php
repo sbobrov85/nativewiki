@@ -84,4 +84,45 @@ class NativeWikiPlugin extends MantisPlugin  {
 	{
 		return NativeWikiCommonHelper::getThresholds();
 	}
+
+	/**
+	 * {@inheriteDoc}
+	 * @see MantisPlugin::schema()
+	 */
+	public function schema()
+	{
+		$tableOptions = array(
+			'mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+		);
+
+		$schema = array(
+			array('CreateTableSQL', array(plugin_table('page'), '
+				page_id I NOTNULL AUTOINCREMENT PRIMARY,
+				parent_id I NOTNULL,
+				alias C(255) NOTNULL,
+				header C(255) NOTNULL,
+				wiki_text XL NOTNULL,
+				is_default L NOTNULL DEFAULT 0
+			', $tableOptions
+			)),
+			array('CreateIndexSQL', array(
+				'idx_parent_id',
+				plugin_table('page'),
+				'parent_id'
+			)),
+			array('CreateIndexSQL', array(
+				'idx_alias',
+				plugin_table('page'),
+				'alias'
+			)),
+			array('CreateIndexSQL', array(
+				'idx_parent_id_alias',
+				plugin_table('page'),
+				array('parent_id', 'alias'),
+				array('UNIQUE')
+			))
+		);
+
+		return $schema;
+	}
 }

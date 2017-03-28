@@ -19,6 +19,7 @@
  */
 
 plugin_require_api('helper/NativeWikiCommon.php', 'NativeWiki');
+plugin_require_api('helper/NativeWikiContent.php', 'NativeWiki');
 
 access_ensure_project_level(plugin_config_get('view_wiki'));
 
@@ -30,6 +31,10 @@ layout_page_begin(NativeWikiCommonHelper::getWikiUrl());
 
 $canEdit = access_has_project_level(plugin_config_get('edit_wiki_pages'));
 $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_history'));
+
+$content = NativeWikiContentHelper::getContent(
+	gpc_get_string('path', '')
+);
 
 ?>
 
@@ -46,11 +51,10 @@ $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_hi
 					<i class="ace-icon fa fa-file-o"></i>
 					<?= lang_get('plugin_NativeWiki_wiki_for') ?>
 					<?php
-						$currentProject = helper_get_current_project();
-						if ($currentProject != ALL_PROJECTS) {
-							echo string_display(project_get_name($currentProject));
+						if (!empty($content['header'])) {
+							echo $content['header'];
 						} else {
-							echo lang_get('all_projects');
+							echo lang_get('plugin_NativeWiki_empty_header');
 						}
 					?>
 				</h4>
@@ -82,6 +86,20 @@ $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_hi
 					<!-- /btn-group -->
 				</div>
 				<!-- /btn-toolbar -->
+
+				<div class="space-10"></div>
+
+				<!-- content -->
+				<div class="content">
+					<?php if (!empty($content['wiki_text'])) {
+						echo $content['wiki_text'];
+					} else {
+						echo lang_get('plugin_NativeWiki_nopage');
+					} ?>
+				</div>
+				<!-- /content -->
+
+				<div class="space-10"></div>
 			</div>
 			<!-- /widger-toolbox -->
 			<?php endif ?>
