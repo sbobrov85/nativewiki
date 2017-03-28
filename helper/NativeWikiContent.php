@@ -22,37 +22,61 @@ class NativeWikiContentHelper {
 	/**
 	 * Get wiki content from database.
 	 * @param string $path colon-separated string.
+     * @param int $projectId wiki project id.
 	 * @return array header and wiki text pair or empty array.
 	 */
-	public static function getContent($path)
+	public static function getContent($path, $projectId = ALL_PROJECTS)
 	{
-		$paths = array_filter(implode(':', $path));
+		//base query parts arrays.
+		$query = array(
+			'SELECT p.header, p.wiki_text FROM ' . plugin_table('page') . ' p'
+		);
+		$queryWhere = array();
+
+		// try explode multilevel path by colon.
+		$paths = array_filter(explode(':', $path));
+
+		// get only two last aliases (parent->child).
 		if (count($paths) > 2) {
 			$paths = array_slice($paths, 0, -2);
 		}
 
-		$query = array(
-			'SELECT p.header, p.wiki_text FROM ' . plugin_table('page') . ' p'
-		);
-		$queryWhere = array('WHERE');
-
 		if (count($paths)) {
-			$queryWhere []= 'p.alias = ' . $db_param();
-		} else {
-			$queryWhere []= 'p.page_id = 0';
+			$queryWhere []= 'p.alias = ' . db_param();
+		} else { // default way...
+			$queryWhere []= 'p.alias IS NULL';
 		}
 
+		// for top pages lock parent_id
+		if (count($paths) < 2) {
+			$queryWhere []= 'p.parent_id = 0';
+		}
+
+		// check parent_id relation.
 		if (count($paths) > 1) {
 			$paths = array_reverse($paths);
-			$query []= 'JOIN wiki_text as pp ON pp.page_id = p.page_id';
-			$queryWhere []= 'AND pp.alias_id = ' . $db_param();
+			$query []= 'JOIN ' . plugin_table('page')
+				. ' pp ON pp.page_id = p.parent_id';
+			$queryWhere []= 'pp.alias = ' . db_param();
 		}
 
+		// lock current project
+        $queryWhere []= 'p.project_id = ' . db_param();
+
+		// build query params.
+		$dbParams = array();
+		if (!empty($paths)) {
+			$dbParams = array_merge($dbParams, $paths);
+		}
+		$dbParams []= $projectId;
+
+		// get ado result instance.
 		$ado = db_query(
-			implode(' ', $query) . ' ' . implode(' ', $queryWhere),
-			!empty($paths) ? $paths : null
+			implode(' ', $query) . ' WHERE ' . implode(' AND ', $queryWhere),
+			$dbParams
 		);
 
+		// fetch result.
 		$page = $ado->getRowAssoc();
 
 		return $page ?: array();

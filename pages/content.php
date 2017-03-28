@@ -33,7 +33,8 @@ $canEdit = access_has_project_level(plugin_config_get('edit_wiki_pages'));
 $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_history'));
 
 $content = NativeWikiContentHelper::getContent(
-	gpc_get_string('path', '')
+	gpc_get_string('path', ''),
+	helper_get_current_project()
 );
 
 ?>

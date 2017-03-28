@@ -99,10 +99,10 @@ class NativeWikiPlugin extends MantisPlugin  {
 			array('CreateTableSQL', array(plugin_table('page'), '
 				page_id I NOTNULL AUTOINCREMENT PRIMARY,
 				parent_id I NOTNULL,
-				alias C(255) NOTNULL,
+                project_id I NOTNULL,
+				alias C(255) NULL,
 				header C(255) NOTNULL,
-				wiki_text XL NOTNULL,
-				is_default L NOTNULL DEFAULT 0
+				wiki_text XL NOTNULL
 			', $tableOptions
 			)),
 			array('CreateIndexSQL', array(
@@ -111,14 +111,19 @@ class NativeWikiPlugin extends MantisPlugin  {
 				'parent_id'
 			)),
 			array('CreateIndexSQL', array(
+				'idx_project_id',
+				plugin_table('page'),
+				'project_id'
+			)),
+			array('CreateIndexSQL', array(
 				'idx_alias',
 				plugin_table('page'),
 				'alias'
 			)),
 			array('CreateIndexSQL', array(
-				'idx_parent_id_alias',
+				'idx_parent_project_alias',
 				plugin_table('page'),
-				array('parent_id', 'alias'),
+				array('parent_id', 'project_id', 'alias'),
 				array('UNIQUE')
 			))
 		);
