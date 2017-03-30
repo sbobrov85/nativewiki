@@ -99,6 +99,10 @@ class NativeWikiContentHelper {
 	 */
 	public static function updateWikiPage($pageId, $bind)
 	{
+		if (empty($bind['alias'])) {
+			$bind['alias'] = null;
+		}
+
 		$query = 'UPDATE ' . plugin_table('page') . ' SET '
 			. 'alias = ' . db_param() . ', '
 			. 'header = ' . db_param() . ', '
@@ -137,6 +141,9 @@ class NativeWikiContentHelper {
 	 */
 	protected static function insertWikiPage($bind)
 	{
+		if (empty($bind['alias'])) {
+			$bind['alias'] = null;
+		}
 
 		$query = 'INSERT INTO ' . plugin_table('page') . ' VALUES ('
 			. db_param() . ', '
