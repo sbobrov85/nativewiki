@@ -31,6 +31,7 @@ layout_page_begin(NativeWikiCommonHelper::getWikiUrl());
 
 $canEdit = access_has_project_level(plugin_config_get('edit_wiki_pages'));
 $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_history'));
+$canDelete = access_has_project_level(plugin_config_get('delete_wiki_pages'));
 
 $path = gpc_get_string('path', '');
 $content = NativeWikiContentHelper::getContent(
@@ -65,7 +66,7 @@ $content = NativeWikiContentHelper::getContent(
 
 			<!-- widger-toolbox -->
 			<div class="widget-toolbox padding-8 clearfix">
-				<?php if (!empty($content) && ($canEdit || $canViewHistory)): ?>
+				<?php if (!empty($content) && ($canEdit || $canViewHistory || $canDelete)): ?>
 				<!-- btn-toolbar -->
 				<div class="btn-toolbar">
 					<!-- btn-group -->
@@ -81,6 +82,13 @@ $content = NativeWikiContentHelper::getContent(
 							print_small_button(
 								plugin_page('history.php'),
 								lang_get('plugin_NativeWiki_history')
+							);
+						}
+						if ($canDelete) {
+							print_small_button(
+								plugin_page('delete.php')
+									. (!empty($path) ? '&path=' . $path : ''),
+								lang_get('plugin_NativeWiki_delete')
 							);
 						}
 					?>

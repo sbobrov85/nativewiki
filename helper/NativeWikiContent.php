@@ -217,4 +217,20 @@ class NativeWikiContentHelper {
 
 		return $result;
 	}
+
+	/**
+	 * Remove wiki page text and history.
+	 * @param string $path wiki page path.
+	 * @param int $projectId current project id.
+	 */
+	public static function deleteWikiPage($path, $projectId)
+	{
+		$page = self::getContent($path, $projectId);
+
+		if (!empty($page['page_id'])) {
+			$page['header'] = '';
+			$page['wiki_text'] = '';
+			self::updateWikiPage($page['page_id'], $page);
+		}
+	}
 }
