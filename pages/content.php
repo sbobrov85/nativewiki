@@ -32,8 +32,9 @@ layout_page_begin(NativeWikiCommonHelper::getWikiUrl());
 $canEdit = access_has_project_level(plugin_config_get('edit_wiki_pages'));
 $canViewHistory = access_has_project_level(plugin_config_get('view_wiki_pages_history'));
 
+$path = gpc_get_string('path', '');
 $content = NativeWikiContentHelper::getContent(
-	gpc_get_string('path', ''),
+	$path,
 	helper_get_current_project()
 );
 
@@ -62,9 +63,9 @@ $content = NativeWikiContentHelper::getContent(
 			</div>
 			<!-- /widget-header -->
 
-			<?php if ($canEdit || $canViewHistory): ?>
 			<!-- widger-toolbox -->
 			<div class="widget-toolbox padding-8 clearfix">
+				<?php if (!empty($content) && ($canEdit || $canViewHistory)): ?>
 				<!-- btn-toolbar -->
 				<div class="btn-toolbar">
 					<!-- btn-group -->
@@ -72,7 +73,7 @@ $content = NativeWikiContentHelper::getContent(
 					<?php
 						if ($canEdit) {
 							print_small_button(
-								plugin_page('edit.php'),
+								plugin_page('edit.php') . '&path=' . $path,
 								lang_get('plugin_NativeWiki_edit')
 							);
 						}
@@ -87,6 +88,7 @@ $content = NativeWikiContentHelper::getContent(
 					<!-- /btn-group -->
 				</div>
 				<!-- /btn-toolbar -->
+				<?php endif ?>
 
 				<div class="space-10"></div>
 
@@ -95,7 +97,11 @@ $content = NativeWikiContentHelper::getContent(
 					<?php if (!empty($content['wiki_text'])) {
 						echo $content['wiki_text'];
 					} else {
-						echo lang_get('plugin_NativeWiki_nopage');
+						echo lang_get('plugin_NativeWiki_nopage') . '. ';
+						echo '<a href="' . plugin_page('edit.php')
+							. (!empty($path) ? '&path=' . $path : '') . '">'
+							. lang_get('plugin_NativeWiki_create_new_page')
+							. '?</a>';
 					} ?>
 				</div>
 				<!-- /content -->
@@ -103,7 +109,6 @@ $content = NativeWikiContentHelper::getContent(
 				<div class="space-10"></div>
 			</div>
 			<!-- /widger-toolbox -->
-			<?php endif ?>
 
 		</div>
 		<!-- /widget-box -->
