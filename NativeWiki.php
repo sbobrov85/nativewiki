@@ -125,6 +125,26 @@ class NativeWikiPlugin extends MantisPlugin  {
 				plugin_table('page'),
 				array('parent_id', 'project_id', 'alias'),
 				array('UNIQUE')
+			)),
+
+			array('CreateTableSQL', array(plugin_table('history'), '
+				history_id I NOTNULL AUTOINCREMENT PRIMARY,
+				page_id I NOTNULL,
+				user_id I NOTNULL,
+				date T NOTNULL,
+				diff XL NOTNULL,
+				info XL NOTNULL
+			', $tableOptions
+			)),
+			array('CreateIndexSQL', array(
+				'idx_page_id',
+				plugin_table('history'),
+				'page_id'
+			)),
+			array('CreateIndexSQL', array(
+				'idx_user_id',
+				plugin_table('history'),
+				'user_id'
 			))
 		);
 
